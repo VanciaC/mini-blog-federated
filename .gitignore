@@ -1,0 +1,22 @@
+# Environnement
+.env
+.env.local
+.env.production
+
+# Laravel
+**/vendor/
+**/node_modules/
+**/.env
+**/storage/logs/*
+**/storage/framework/cache/*
+**/storage/framework/sessions/*
+**/storage/framework/views/*
+**/bootstrap/cache/*
+
+# Node
+**/node_modules/
+gateway/package-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
