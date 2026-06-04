@@ -1,14 +1,3 @@
-# Mini Blog Federated
-
-A federated GraphQL API built with Laravel microservices and Apollo Gateway.
-
-## Prerequisites
-
-- PHP 8.3
-- Composer
-- Node.js 20+
-- Docker & Docker Compose
-
 ## Getting Started
 
 ### 1. Clone the repository
@@ -28,12 +17,17 @@ composer install
 ### 3. Environment setup
 
 ```bash
-cp .env.example .env
+cp users-service/.env.example users-service/.env
 ```
+
+Then fill in the required values in `users-service/.env` :
+- `DB_PASSWORD` — your MySQL password
+- `JWT_SECRET` — generated in the next step
 
 ### 4. Generate JWT secret
 
 ```bash
+cd users-service
 php artisan jwt:secret
 ```
 
@@ -41,5 +35,8 @@ php artisan jwt:secret
 
 ### 5. Configure auth guard
 
-In `config/auth.php`, set the default guard to `api` and add the JWT driver.
-See `config/auth.php` for the full configuration.
+In `config/auth.php` :
+- Set default guard to `api`
+- Add JWT driver to `api` guard
+
+See `users-service/config/auth.php` for the full configuration.
