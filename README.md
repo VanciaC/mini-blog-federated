@@ -58,3 +58,31 @@ cp gateway/.env.example gateway/.env
 Then fill in the required values in `gateway/.env` :
 - `USERS_SERVICE_URL` — URL of the users-service GraphQL endpoint
 - `POSTS_SERVICE_URL` — URL of the posts-service GraphQL endpoint
+
+### 5. Start the project
+
+```bash
+docker-compose up --build
+```
+
+This starts :
+- `db-users` on port 3306
+- `db-posts` on port 3307
+- `users-service` on port 8001
+- `posts-service` on port 8002
+- `gateway` on port 4000
+
+### 6. Run migrations
+
+```bash
+docker-compose exec users-service php artisan migrate
+docker-compose exec posts-service php artisan migrate
+```
+
+### 7. Query the API
+
+Open Postman or any GraphQL client at :
+
+```
+http://localhost:4000/graphql
+```
