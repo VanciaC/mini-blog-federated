@@ -2,9 +2,9 @@
 
 namespace App\GraphQL;
 
+use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Schema\ResolverProvider;
 use Nuwave\Lighthouse\Schema\Values\FieldValue;
-use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Utils;
 
 class CustomResolverProvider extends ResolverProvider
@@ -13,7 +13,7 @@ class CustomResolverProvider extends ResolverProvider
     {
         // Try with suffix first (RegisterMutation, MeQuery)
         $withSuffix = Utils::namespaceClassname(
-            Str::studly($fieldValue->getFieldName()) . Str::studly($fieldValue->getParentName()),
+            Str::studly($fieldValue->getFieldName()).Str::studly($fieldValue->getParentName()),
             $fieldValue->parentNamespaces(),
             static fn (string $class): bool => method_exists($class, $methodName),
         );

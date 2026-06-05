@@ -18,8 +18,8 @@ class CreatePostMutation
     {
         return $this->postService->create(
             new CreatePostDTO(
-                title:    $args['title'],
-                body:     $args['body'],
+                title: $args['title'],
+                body: $args['body'],
                 authorId: $this->auth->guard('api')->id(),
             )
         );

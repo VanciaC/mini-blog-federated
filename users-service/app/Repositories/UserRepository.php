@@ -21,6 +21,7 @@ class UserRepository implements Interfaces\UserRepositoryInterface
     public function save(User $user): User
     {
         $user->save();
+
         return $user->refresh();
     }
 }

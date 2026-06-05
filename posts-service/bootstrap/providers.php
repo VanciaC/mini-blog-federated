@@ -1,6 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Nuwave\Lighthouse\Federation\FederationServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    Nuwave\Lighthouse\Federation\FederationServiceProvider::class,
+    AppServiceProvider::class,
+    FederationServiceProvider::class,
 ];

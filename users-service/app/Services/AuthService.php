@@ -20,34 +20,34 @@ class AuthService
 
     public function register(RegisterUserDTO $registerUserDto): AuthPayload
     {
-        $user           = new User();
-        $user->name     = $registerUserDto->name;
-        $user->email    = $registerUserDto->email;
+        $user = new User;
+        $user->name = $registerUserDto->name;
+        $user->email = $registerUserDto->email;
         $user->password = bcrypt($registerUserDto->password);
 
-        $user  = $this->userRepository->save($user);
+        $user = $this->userRepository->save($user);
         $token = $this->jwt->fromUser($user);
 
         return new AuthPayload(
             token: $token,
-            user:  $user,
+            user: $user,
         );
     }
 
     public function login(string $email, string $password): AuthPayload
     {
         $token = $this->jwt->attempt([
-            'email'    => $email,
+            'email' => $email,
             'password' => $password,
         ]);
 
-        if (!$token) {
+        if (! $token) {
             throw new RuntimeException('Invalid credentials.');
         }
 
         return new AuthPayload(
             token: $token,
-            user:  $this->authManager->guard('api')->user(),
+            user: $this->authManager->guard('api')->user(),
         );
     }
 
