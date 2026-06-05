@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+
+  # ─── DATABASES ──────────────────────────────────────────
+
+  db-users:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: users_db
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_users_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+
+  db-posts:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: posts_db
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_posts_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+
+  # ─── SERVICES ───────────────────────────────────────────
+
+  users-service:
+    build:
+      context: ./users-service
+      args:
+        APP_ENV: ${APP_ENV:-local}
+    ports:
+      - "8001:80"
+    depends_on:
+      db-users:
+        condition: service_healthy
+    env_file:
+      - ./users-service/.env
+
+  posts-service:
+    build:
+      context: ./posts-service
+      args:
+        APP_ENV: ${APP_ENV:-local}
+    ports:
+      - "8002:80"
+    depends_on:
+      db-posts:
+        condition: service_healthy
+    env_file:
+      - ./posts-service/.env
+
+  # ─── GATEWAY ────────────────────────────────────────────
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - users-service
+      - posts-service
+    env_file:
+      - ./gateway/.env
+
+# ─── VOLUMES ──────────────────────────────────────────────
+
+volumes:
+  mysql_users_data:
+  mysql_posts_data:
