@@ -41,3 +41,20 @@ cd ../posts-service && php artisan jwt:secret
 ```
 
 > Automatically adds `JWT_SECRET` to your `.env`. Never commit this value.
+
+### 4. Install gateway dependencies
+
+```bash
+cd gateway
+npm install
+```
+
+#### Environment setup
+
+```bash
+cp gateway/.env.example gateway/.env
+```
+
+Then fill in the required values in `gateway/.env` :
+- `USERS_SERVICE_URL` — URL of the users-service GraphQL endpoint
+- `POSTS_SERVICE_URL` — URL of the posts-service GraphQL endpoint
