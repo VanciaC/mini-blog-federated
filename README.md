@@ -1,5 +1,12 @@
 ## Getting Started
 
+### Prerequisites
+
+- PHP 8.3
+- Composer
+- Node.js 20+
+- Docker & Docker Compose
+
 ### 1. Clone the repository
 
 ```bash
@@ -7,36 +14,30 @@ git clone https://github.com/your-username/mini-blog-federated.git
 cd mini-blog-federated
 ```
 
-### 2. Install users-service dependencies
+### 2. Environment setup
 
 ```bash
-cd users-service
-composer install
-```
-
-### 3. Environment setup
-
-```bash
+# users-service
 cp users-service/.env.example users-service/.env
+
+# posts-service
+cp posts-service/.env.example posts-service/.env
 ```
 
-Then fill in the required values in `users-service/.env` :
+Then fill in the required values in each `.env` :
 - `DB_PASSWORD` — your MySQL password
 - `JWT_SECRET` — generated in the next step
 
-### 4. Generate JWT secret
+> `JWT_SECRET` must be identical in both services — they need to validate the same tokens.
+
+### 3. Generate JWT secrets
 
 ```bash
-cd users-service
-php artisan jwt:secret
+# users-service
+cd users-service && php artisan jwt:secret
+
+# posts-service
+cd ../posts-service && php artisan jwt:secret
 ```
 
 > Automatically adds `JWT_SECRET` to your `.env`. Never commit this value.
-
-### 5. Configure auth guard
-
-In `config/auth.php` :
-- Set default guard to `api`
-- Add JWT driver to `api` guard
-
-See `users-service/config/auth.php` for the full configuration.
