@@ -1,0 +1,6 @@
+type Mutation {
+    createPost(
+        title: String!
+        body: String!
+    ): Post! @auth
+}
