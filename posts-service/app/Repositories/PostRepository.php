@@ -23,6 +23,7 @@ class PostRepository implements PostRepositoryInterface
     public function save(Post $post): Post
     {
         $post->save();
+
         return $post->refresh();
     }
 }

@@ -1,2 +1,6 @@
 extend schema
-    @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@external"])
+    @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key"])
+
+#import types.graphql
+#import queries.graphql
+#import mutations.graphql
