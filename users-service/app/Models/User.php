@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Carbon;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
 
 /**
  * @property int $id
  * @property string $name
  * @property string $email
  * @property string $password
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -33,6 +33,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims(): array
     {
-        return [];  
+        return [];
     }
 }

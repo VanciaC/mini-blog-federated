@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
   # ─── DATABASES ──────────────────────────────────────────
@@ -7,8 +5,8 @@ services:
   db-users:
     image: mysql:8
     environment:
-      MYSQL_DATABASE: users_db
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ${MYSQL_USERS_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_USERS_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
@@ -21,8 +19,8 @@ services:
   db-posts:
     image: mysql:8
     environment:
-      MYSQL_DATABASE: posts_db
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ${MYSQL_POSTS_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_POSTS_PASSWORD}
     ports:
       - "3307:3306"
     volumes:
@@ -46,6 +44,13 @@ services:
         condition: service_healthy
     env_file:
       - ./users-service/.env
+    volumes:
+      - ./users-service:/var/www
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/graphql"]
+      timeout: 5s
+      retries: 10
+      interval: 5s
 
   posts-service:
     build:
@@ -59,6 +64,13 @@ services:
         condition: service_healthy
     env_file:
       - ./posts-service/.env
+    volumes:
+      - ./posts-service:/var/www
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/graphql"]
+      timeout: 5s
+      retries: 10
+      interval: 5s
 
   # ─── GATEWAY ────────────────────────────────────────────
 
@@ -67,8 +79,10 @@ services:
     ports:
       - "4000:4000"
     depends_on:
-      - users-service
-      - posts-service
+      users-service:
+        condition: service_healthy
+      posts-service:
+        condition: service_healthy
     env_file:
       - ./gateway/.env
 
