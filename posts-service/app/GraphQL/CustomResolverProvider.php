@@ -11,18 +11,18 @@ class CustomResolverProvider extends ResolverProvider
 {
     protected function findResolverClass(FieldValue $fieldValue, string $methodName): ?string
     {
-        // Try with suffix first (RegisterMutation, MeQuery)
-        $withSuffix = Utils::namespaceClassname(
-            Str::studly($fieldValue->getFieldName()).Str::studly($fieldValue->getParentName()),
+        $withSuffix = Str::studly($fieldValue->getFieldName()).Str::studly($fieldValue->getParentName());
+
+        $resolved = Utils::namespaceClassname(
+            $withSuffix,
             $fieldValue->parentNamespaces(),
             static fn (string $class): bool => method_exists($class, $methodName),
         );
 
-        if ($withSuffix !== null) {
-            return $withSuffix;
+        if ($resolved !== null) {
+            return $resolved;
         }
 
-        // Fall back to default (Register, Me)
         return parent::findResolverClass($fieldValue, $methodName);
     }
 }

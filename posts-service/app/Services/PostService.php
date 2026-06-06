@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\DTO\CreatePostDTO;
+use App\DTO\CreatePostDto;
 use App\Models\Post;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Support\Enumerable;
@@ -23,7 +23,7 @@ class PostService
         return $this->postRepository->findById($id);
     }
 
-    public function create(CreatePostDTO $dto): Post
+    public function create(CreatePostDto $dto): Post
     {
         $post = new Post;
         $post->title = $dto->title;
