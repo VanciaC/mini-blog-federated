@@ -8,5 +8,6 @@ class CreatePostDto
         public readonly string $title,
         public readonly string $body,
         public readonly int $authorId,
+        public readonly string $createdAt,
     ) {}
 }
