@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\DTO\AuthPayload;
-use App\DTO\RegisterUserDTO;
+use App\DTO\RegisterUserDto;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Auth\AuthManager;
@@ -18,7 +18,7 @@ class AuthService
         private readonly AuthManager $authManager,
     ) {}
 
-    public function register(RegisterUserDTO $registerUserDto): AuthPayload
+    public function register(RegisterUserDto $registerUserDto): AuthPayload
     {
         $user = new User;
         $user->name = $registerUserDto->name;
@@ -36,7 +36,7 @@ class AuthService
 
     public function login(string $email, string $password): AuthPayload
     {
-        $token = $this->jwt->attempt([
+        $token = $this->authManager->guard('api')->attempt([
             'email' => $email,
             'password' => $password,
         ]);

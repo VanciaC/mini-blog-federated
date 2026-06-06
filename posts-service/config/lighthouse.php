@@ -10,7 +10,7 @@ use Nuwave\Lighthouse\Execution\AuthorizationErrorHandler;
 use Nuwave\Lighthouse\Execution\ReportingErrorHandler;
 use Nuwave\Lighthouse\Execution\ValidationErrorHandler;
 use Nuwave\Lighthouse\Http\Middleware\AcceptJson;
-use Nuwave\Lighthouse\Http\Middleware\AttemptAuthentication;
+// use Nuwave\Lighthouse\Http\Middleware\AttemptAuthentication;
 use Nuwave\Lighthouse\Schema\Directives\ConvertEmptyStringsToNullDirective;
 use Nuwave\Lighthouse\Schema\Directives\DropArgsDirective;
 use Nuwave\Lighthouse\Schema\Directives\RenameArgsDirective;
@@ -58,7 +58,7 @@ return [
 
             // Logs in a user if they are authenticated. In contrast to Laravel's 'auth'
             // middleware, this delegates auth and permission checks to the field level.
-            AttemptAuthentication::class,
+            // AttemptAuthentication::class,
 
             // Logs every incoming GraphQL query.
             // Nuwave\Lighthouse\Http\Middleware\LogGraphQLQueries::class,
@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'guards' => ['api'],
+    'guards' => null,
 
     /*
     |--------------------------------------------------------------------------

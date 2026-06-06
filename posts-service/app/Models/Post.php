@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property string $title
  * @property string $body
  * @property int $author_id
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Post extends Model
 {
@@ -21,8 +20,20 @@ class Post extends Model
         'author_id',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    protected $appends = ['authorId', 'createdAt', 'author'];
+
+    public function getCreatedAtAttribute(): string
+    {
+        return (string) $this->attributes['created_at'];
+    }
+
+    public function getAuthorIdAttribute(): int
+    {
+        return (int) $this->attributes['author_id'];
+    }
+
+    public function getAuthorAttribute(): array
+    {
+        return ['id' => $this->attributes['author_id']];
+    }
 }
