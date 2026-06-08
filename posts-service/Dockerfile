@@ -24,13 +24,6 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 
-# Build arg for environment
-ARG APP_ENV=local
-RUN if [ "$APP_ENV" = "production" ]; then \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache; \
-fi
 
 EXPOSE 80
 
