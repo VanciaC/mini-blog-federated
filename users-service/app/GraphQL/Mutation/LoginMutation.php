@@ -12,7 +12,7 @@ class LoginMutation
     public function __invoke(mixed $root, array $args): AuthPayload
     {
         return $this->authService->login(
-            email:    $args['email'],
+            email: $args['email'],
             password: $args['password'],
         );
     }

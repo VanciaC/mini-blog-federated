@@ -2,8 +2,8 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\DTO\RegisterUserDTO;
 use App\DTO\AuthPayload;
+use App\DTO\RegisterUserDTO;
 use App\Services\AuthService;
 
 class RegisterMutation
@@ -14,8 +14,8 @@ class RegisterMutation
     {
         return $this->authService->register(
             new RegisterUserDTO(
-                name:     $args['name'],
-                email:    $args['email'],
+                name: $args['name'],
+                email: $args['email'],
                 password: $args['password'],
             )
         );
