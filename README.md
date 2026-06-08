@@ -89,3 +89,53 @@ docker compose exec posts-service php artisan migrate
 ```
 http://localhost:4000/graphql
 ```
+
+
+## Deployment
+
+This project is deployed on [Railway](https://railway.app).
+
+Each service runs as an independent container:
+
+- `db-users` and `db-posts` — MySQL 8 managed databases
+- `users-service` and `posts-service` — Laravel 11 apps built from their respective Dockerfiles
+- `gateway` — Node.js Apollo Gateway, the single entry point
+
+Services communicate privately through Railway's internal network. Only the gateway is exposed publicly.
+
+Environment variables (database credentials, JWT secrets, service URLs) are managed directly in the Railway dashboard.
+
+## Example Queries
+
+### Register
+
+```bash
+curl -X POST https://your-gateway-url/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"mutation { register(name: \"Kanon\", email: \"kanon@test.com\", password: \"secret\") { token user { id name } } }"}'
+```
+
+### Login
+
+```bash
+curl -X POST https://your-gateway-url/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"mutation { login(email: \"kanon@test.com\", password: \"secret\") { token } }"}'
+```
+
+### Create a post (requires token)
+
+```bash
+curl -X POST https://your-gateway-url/graphql \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"query":"mutation { createPost(title: \"Hello World\", body: \"My first post\") { id title authorId author { name email } } }"}'
+```
+
+### List all posts with authors
+
+```bash
+curl -X POST https://your-gateway-url/graphql \
+  -H "Content-Type: application/json" \
+  -d '{"query":"{ posts { id title createdAt author { name email } } }"}'
+```
