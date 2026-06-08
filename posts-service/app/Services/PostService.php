@@ -25,9 +25,9 @@ class PostService
 
     public function create(CreatePostDTO $dto): Post
     {
-        $post            = new Post();
-        $post->title     = $dto->title;
-        $post->body      = $dto->body;
+        $post = new Post;
+        $post->title = $dto->title;
+        $post->body = $dto->body;
         $post->author_id = $dto->authorId;
 
         return $this->postRepository->save($post);
