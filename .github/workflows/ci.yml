@@ -31,3 +31,28 @@ jobs:
       - name: Run tests
         working-directory: users-service
         run: php artisan test --env=testing
+
+  posts-service:
+    name: posts-service tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_sqlite, sqlite3, mbstring, xml, bcmath
+
+      - name: Install dependencies
+        working-directory: posts-service
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Copy .env.testing
+        working-directory: posts-service
+        run: cp .env.testing .env
+
+      - name: Run tests
+        working-directory: posts-service
+        run: php artisan test --env=testing
