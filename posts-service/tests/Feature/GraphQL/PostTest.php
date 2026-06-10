@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase, Helpers;
+    use Helpers, RefreshDatabase;
 
     public function test_create_post_returns_post(): void
     {
@@ -50,7 +50,7 @@ class PostTest extends TestCase
             ',
         ]);
 
-        $response->assertJsonPath('data.posts', fn($posts) => count($posts) === 3);
+        $response->assertJsonPath('data.posts', fn ($posts) => count($posts) === 3);
     }
 
     public function test_post_returns_single_post(): void

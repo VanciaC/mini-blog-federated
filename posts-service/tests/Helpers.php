@@ -16,13 +16,13 @@ trait Helpers
             'exp' => time() + 3600,
         ];
 
-        $jwt = new JWT();
+        $jwt = new JWT;
 
         return $jwt->encode($payload, $key, 'HS256');
     }
 
     private function authHeader(int $userId = 1): array
     {
-        return ['Authorization' => 'Bearer ' . $this->makeToken($userId)];
+        return ['Authorization' => 'Bearer '.$this->makeToken($userId)];
     }
 }
