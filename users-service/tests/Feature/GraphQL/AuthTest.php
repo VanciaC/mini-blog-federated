@@ -2,22 +2,13 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Factories\UserFactory;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
-
-    private UserFactory $users;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->users = new UserFactory;
-    }
 
     public function test_register_creates_user_and_returns_token(): void
     {
@@ -39,17 +30,12 @@ class AuthTest extends TestCase
         $response->assertJsonPath('data.register.user.name', 'Kanon');
         $response->assertJsonPath('data.register.user.email', 'kanon@test.com');
         $this->assertNotEmpty($response->json('data.register.token'));
-
-        $this->assertDatabaseHas('users', [
-            'email' => 'kanon@test.com',
-        ]);
+        $this->assertDatabaseHas('users', ['email' => 'kanon@test.com']);
     }
 
     public function test_register_fails_with_duplicate_email(): void
     {
-        $this->users->create([
-            'email' => 'kanon@test.com',
-        ]);
+        User::factory()->create(['email' => 'kanon@test.com']);
 
         $response = $this->postJson('/graphql', [
             'query' => '
@@ -66,8 +52,8 @@ class AuthTest extends TestCase
 
     public function test_login_returns_token(): void
     {
-        $this->users->create([
-            'email' => 'kanon@test.com',
+        User::factory()->create([
+            'email'    => 'kanon@test.com',
             'password' => password_hash('secret', PASSWORD_BCRYPT),
         ]);
 
@@ -86,17 +72,13 @@ class AuthTest extends TestCase
         ]);
 
         $this->assertNotEmpty($response->json('data.login.token'));
-
-        $response->assertJsonPath(
-            'data.login.user.email',
-            'kanon@test.com'
-        );
+        $response->assertJsonPath('data.login.user.email', 'kanon@test.com');
     }
 
     public function test_login_fails_with_wrong_password(): void
     {
-        $this->users->create([
-            'email' => 'kanon@test.com',
+        User::factory()->create([
+            'email'    => 'kanon@test.com',
             'password' => password_hash('secret', PASSWORD_BCRYPT),
         ]);
 
@@ -110,9 +92,6 @@ class AuthTest extends TestCase
             ',
         ]);
 
-        $response->assertJsonPath(
-            'errors.0.message',
-            'Internal server error'
-        );
+        $response->assertJsonPath('errors.0.message', 'Internal server error');
     }
 }
